@@ -1,0 +1,209 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\title{AM-GM}
+\author{Andi Jingzhi Tse}
+\date{April 28, 2021}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{soul}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{color}
+\theoremstyle{definition}
+\newtheorem*{solution}{\color{blue}Solution}
+\pagestyle{fancy}
+\lhead{Andi Jingzhi Tse}
+\chead{AM-GM}
+\rhead{April 28, 2021}
+\cfoot{\thepage}
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+AM-GM is the abbreviation for \textit{Arithmetic and Geometric Means}, which is representing this inequality: 
+$$\frac{a_1+a_2+a_3+\cdots +a_n}{n}\ge \sqrt[n]{a_1a_2a_3\cdots a_n}\quad\text{for }a_i\in \mathbb{R}^+,n\in \mathbb N$$
+or 
+\[
+\frac 1n\sum_{k=1}^na_k\ge \sqrt[n]{\prod_{k=1}^na_k}
+\]
+
+\section{Proof to the Theorem}
+Let's start the proof with $n=2$
+\begin{align*}
+\left(a-b\right)^2&\ge 0\\
+a^2-2ab+b^2&\ge 0\\
+a^2+2ab+b^2&\ge 4ab\\
+\left(\frac{a+b}{2}\right)^2&\ge ab\tag{1}\\
+\frac{a+b}{2}&\ge \sqrt{ab}\tag{2}
+\end{align*}
+Careful that there is no $\pm$ in front of the radical in (2) because both sides are always positive.\\
+Now for generality, for any $n$, we have these two expressions:
+$$\frac{a_1+a_2+a_3+\cdots +a_n}{n},\sqrt[n]{a_1a_2a_3\cdots a_n}$$
+If $a_i\neq a_j$, for some $i\neq j$, we replace both $a_i$ and $a_j$ with $\frac{a_i+a_j}{2}$\\
+Notice that the LHS does not change, while RHS increases, because $\left(\frac{a_i+a_j}{2}\right)^2\ge a_ia_j$ from (1)\\
+We repeat this many times, the RHS reaches its maximum when  $a_1=a_2=a_3=\cdots=a_n$\\
+We calculate their relationship when all elements all equal:
+$$\frac{na_1}{n}=\sqrt[n]{a_1^n}$$
+Even when RHS reached its maximum, it is still only equals to LHS. Therefore, LHS $\ge$ RHS, we conclude that the theorem is true.\\
+\underline{Note that the equality case occurs when all elements are equal} 
+\pagebreak
+
+\section{Using the Theorem Directly}
+\begin{tcolorbox}
+    Let $x,y,z>0$ with $2x+3y+5z=6$. Find the maximum of $xyz$ and $(x,y,z)$ when maximum is reached
+\end{tcolorbox}
+
+
+\begin{solution}
+    By applying the AM-GM directly, we know that
+    $$\frac{2x+3y+5z}{3}\ge \sqrt[3]{30xyz}$$
+    Substitute $2x+3y+5z=6$, we get
+    \begin{align*}
+    \sqrt[3]{30xyz}&\leq 2\\
+    30xyz&\leq 8\\
+    xyz&\leq \boxed{\frac{4}{15}}
+    \end{align*}
+    In order to reach the maximum, we have
+    $$2x=3y=5z$$
+    Substitute into $2x+3y+5z=6$
+    \begin{align*}
+        6x&=6\\
+        (x,y,z)&=\boxed{\left(1,\frac{2}{3},\frac{2}{5}\right)}
+    \end{align*}
+\end{solution}
+\pagebreak
+
+
+
+\section{A Bit Trickier}
+\begin{tcolorbox}
+    Let $x,y,z>0$ with $x^2y^3z=9$. Find the minimum of $2x+y+3z$ and state when is the minimum achieved
+\end{tcolorbox}
+
+\begin{solution}
+    We seperate $2x+y+3z$ into $$x+x+\frac{1}{3}y+\frac{1}{3}y+\frac{1}{3}y+3z$$
+    Then we apply the AM-GM
+    $$x+x+\frac{1}{3}y+\frac{1}{3}y+\frac{1}{3}y+3z\ge 6\sqrt[6]{\frac{1}{9}x^2y^3z}=\boxed{6}$$
+    The equality case (minimum) occurs when $x=\frac{y}{3}=3z$\\
+    Substitute into $x^2y^3z=9$
+    \begin{align*}
+    x^2\cdot 27x^3\cdot \frac{1}{3}x&=9\\
+    x^6&=1\\
+    (x,y,z)&=\boxed{\left(1,3,\frac{1}{3}\right)}
+    \end{align*}
+\end{solution}\bigskip\bigskip
+
+\subsection*{Motivation}
+To find the minimum of $2x+y+3z$, we want some format of $2x+y+3z\ge smth$. So we know that we should probably apply AM-GM. Notice that we know that value of $x^2y^3z$, thus we want the term under the radical to have the same variable part. 
+\begin{itemize}
+    \item The exponent of $x$ is 2, we split $2x$ into 2 pieces
+    \item The exponent of $y$ is 3, we split $y$ into 3 pieces
+    \item The exponent of $z$ is 1, we don't split $3z$
+\end{itemize}
+That is the motivation of splitting $2x+y+3z$ into $x+x+\frac{1}{3}y+\frac{1}{3}y+\frac{1}{3}y+3z$
+\pagebreak
+
+
+Let's have another example:
+\begin{tcolorbox}
+    Show that 
+    $$\frac{a_2+a_3}{a_1}+\frac{a_3+a_4}{a_2}+\cdots+\frac{a_n+a_1}{a_{n-1}}+\frac{a_1+a_2}{a_n}\ge 2n$$
+    for all positive real number $a_i\in\mathbb R^+$
+\end{tcolorbox}
+
+\begin{solution}
+    We begin by separating the LHS: \\
+    \[
+    \begin{cases}
+    \dfrac{a_2}{a_1}+\dfrac{a_3}{a_2}+\cdots+\dfrac{a_n}{a_{n-1}}+\dfrac{a_1}{a_n}\\\\
+    \dfrac{a_3}{a_1}+\dfrac{a_4}{a_2}+\cdots+\dfrac{a_1}{a_{n-1}}+\dfrac{a_2}{a_n}\\
+    \end{cases}
+    \]
+    We do AM-GM to both expressions:\\
+    \[
+    \begin{cases}
+    \dfrac{a_2}{a_1}+\dfrac{a_3}{a_2}+\cdots+\dfrac{a_n}{a_{n-1}}+\dfrac{a_1}{a_n}\ge n\sqrt[n]{1}=n\\\\
+    \dfrac{a_3}{a_1}+\dfrac{a_4}{a_2}+\cdots+\dfrac{a_1}{a_{n-1}}+\dfrac{a_2}{a_n}\ge n\sqrt[n]{1}=n\\
+    \end{cases}
+    \]
+    Then we add two inequalities to get the desired inequality:
+    $$\frac{a_2+a_3}{a_1}+\frac{a_3+a_4}{a_2}+\cdots+\frac{a_n+a_1}{a_{n-1}}+\frac{a_1+a_2}{a_n}\ge 2n$$
+\end{solution}
+\subsection*{Motivation}
+We first notice that if we are going to use AM-GM on the LHS directly, the multiplied term is not going to be very nice. We want things to cancel out. Notice that there are $2n$ elements on the numerator and $n$ elements on the denominator. The numbers of elements on the numerator and the denominator need to equal to have elements cancel out. Therefore we separate the original LHS into two expressions. 
+\pagebreak
+
+
+\begin{tcolorbox}
+    Let $a_1,a_2,\cdots ,a_n$ be positive real numbers such that $a_1a_2\cdots a_n=1$. Prove that 
+    $$\left(1+a_1\right)\left(1+a_2\right)\cdots \left(1+a_n\right)\ge 2^n$$
+\end{tcolorbox}
+
+\begin{solution}
+    We begin by applying AM-GM to each parenthesis separately:
+    $$1+a_i\ge 2\sqrt{a_i}$$
+    When we multiply them all together:
+    \begin{align*}
+        1+a_1&\ge 2\sqrt{a_1}\\
+        1+a_2&\ge 2\sqrt{a_2}\\
+        1+a_3&\ge 2\sqrt{a_3}\\
+        &\vdots\\
+        1+a_n&\ge 2\sqrt{a_n}\\\\
+        \left(1+a_1\right)\left(1+a_2\right)\cdots \left(1+a_n\right)&\ge 2^n\sqrt{a_1a_2a_3\cdots a_n}\\
+    \because a_1a_2a_3\cdots a_n&= 1\\
+    \left(1+a_1\right)\left(1+a_2\right)\cdots \left(1+a_n\right)&\ge 2^n
+    \end{align*}
+\end{solution}
+\subsection*{Motivation}
+We can't even apply AM-GM to LHS in this question. And there are $n$ brackets on the LHS and $n$ 2's on the RHS. This is telling us that each bracket is related to $2$. After staring at the question, we figure out that AM-GM needs to be applied individually.
+\pagebreak
+
+
+\section{A Fun Problem}
+\begin{tcolorbox}
+    What is the largest possible volume of a rectangular box whose diagonal length is $12$?
+\end{tcolorbox}
+
+\begin{solution}
+    Let the side lengths be $a,b,c$. From the Pythagorean theorem, 
+    \begin{align}
+        a^2+b^2+c^2=144
+    \end{align}
+    We want to maximize $abc$\\
+    Apply AM-GM on $(1)$
+    \begin{align*}
+        a^2+b^2+c^2&\ge 3\sqrt[3]{a^2b^2c^2}\\
+        144&\ge 3\sqrt[3]{a^2b^2c^2}\\
+        abc&\leq 192\sqrt{3}
+    \end{align*}
+    Note that this occurs when $a=b=c$, which is a cube with side length $4\sqrt{3}$
+\end{solution}\bigskip\bigskip
+
+\subsection*{Something About This Question}
+Obviously the volume of a cube is always the biggest, and then simply $a=\sqrt{\frac{144}{3}}$. But it is nice to see \textit{why} the volume is the biggest when all side lengths are equal. This is a way of doing optimization without using Calculus.
+\pagebreak
+
+
+\section{Practice Questions}
+\begin{enumerate}
+    \item Find the maximum of $2 - a - \frac{1}{2a}$ for all positive $a$
+    \item For positive reals $a, b, c$, show that $$\frac{ a^2 } { bc } + \frac{ b^2 } { ca } + \frac{ c^2 } { ab } \geq 3$$
+    \item Find the minimum value of $$\frac{9x^2\sin^2 x + 4}{x\sin x}$$ for $0 < x < \pi$
+    \item Let $x\in\mathbb{R}$, find the minimum value of $$2^x+3^x+4^x+5^x+2016+5^{-x}+4^{-x}+3^{-x}+2^{-x}$$
+    \item Let $a, b, c$ be positive real numbers. Show that$$a^3+b^3+c^3\ge a^2b+b^2c+c^2a$$
+    \item Let $a, b, c$ be positive real numbers. Show that$$\frac{a^2}{b^2}+\frac{b^2}{c^2}+\frac{c^2}{a^2}\ge \frac{b}{a}+\frac{c}{b}+\frac{a}{c}$$
+    \item Let $a, b, c$ be positive real numbers. Show that$$\frac{c}{a}+\frac{a}{b+c}+\frac{b}{c}\ge 2$$
+    \item Let $a>b$ be positive real numbers. What is the minimum value of$$a+\frac{1}{b(a-b)}$$
+    \item Let $n>1$ be an integer. Show that$$n!<\left(\frac{n+1}{2}\right)^n$$
+    \item Given that $a,b,c\in\mathbb{R}^+$, show that $$\frac{a}{b+c}+\frac{b}{a+c}+\frac{c}{a+b}\ge \frac{3}{2}$$
+\end{enumerate}
+
+
+\end{document}

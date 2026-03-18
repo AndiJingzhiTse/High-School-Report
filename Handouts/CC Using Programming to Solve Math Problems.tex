@@ -1,0 +1,449 @@
+\documentclass{article}
+\usepackage{apacite}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{andi}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage[first=0,last=9]{lcg}
+\setlength{\parindent}{0pt}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage{soul}   
+\usepackage{tikz-cd}
+
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage{pgfplots}
+\pgfplotsset{width=15cm,height=10cm,compat=1.9}
+
+\pgfplotstableread{
+x	y	delta-x	delta-y
+-0.009	-6.3255	0.0284	0.0028
+0.0611	-5.9201	0.0302	0.0019
+0.2967	-5.6324	0.0375	0.0014
+0.4689	-5.4092	0.0445	0.0011
+0.4903	-5.2269	0.0455	0.0009
+0.4822	-5.0728	0.0451	0.0008
+0.5518	-4.9392	0.0485	0.0007
+}{\mytable}
+
+\begin{filecontents}{graphdata.dat}
+x	y	delta-x	delta-y
+-0.009	-6.3255	0.0284	0.0028
+0.0611	-5.9201	0.0302	0.0019
+0.2967	-5.6324	0.0375	0.0014
+0.4689	-5.4092	0.0445	0.0011
+0.4903	-5.2269	0.0455	0.0009
+0.4822	-5.0728	0.0451	0.0008
+0.5518	-4.9392	0.0485	0.0007
+\end{filecontents}
+
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+
+
+\pagestyle{empty}% for cropping
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{zref-savepos}
+\usepackage{tabu}
+
+\newcounter{NoTableEntry}
+\renewcommand*{\theNoTableEntry}{NTE-\the\value{NoTableEntry}}
+
+\newcommand*{\strike}[2]{%
+  \multicolumn{1}{#1}{%
+    \stepcounter{NoTableEntry}%
+    \vadjust pre{\zsavepos{\theNoTableEntry t}}% top
+    \vadjust{\zsavepos{\theNoTableEntry b}}% bottom
+    \zsavepos{\theNoTableEntry l}% left
+    \hspace{0pt plus 1filll}%
+    #2% content
+    \hspace{0pt plus 1filll}%
+    \zsavepos{\theNoTableEntry r}% right
+    \tikz[overlay]{%
+      \draw
+        let
+          \n{llx}={\zposx{\theNoTableEntry l}sp-\zposx{\theNoTableEntry r}sp-\tabcolsep},
+          \n{urx}={\tabcolsep},
+          \n{lly}={\zposy{\theNoTableEntry b}sp-\zposy{\theNoTableEntry r}sp},
+          \n{ury}={\zposy{\theNoTableEntry t}sp-\zposy{\theNoTableEntry r}sp}
+        in
+        (\n{llx}, \n{lly}) -- (\n{urx}, \n{ury})
+      ;
+    }% 
+  }%
+}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\tikzset{
+    right angle quadrant/.code={
+        \pgfmathsetmacro\quadranta{{1,1,-1,-1}[#1-1]}     % Arrays for selecting quadrant
+        \pgfmathsetmacro\quadrantb{{1,-1,-1,1}[#1-1]}},
+    right angle quadrant=1, % Make sure it is set, even if not called explicitly
+    right angle length/.code={\def\rightanglelength{#1}},   % Length of symbol
+    right angle length=2ex, % Make sure it is set...
+    right angle symbol/.style n args={3}{
+        insert path={
+            let \p0 = ($(#1)!(#3)!(#2)$) in     % Intersection
+                let \p1 = ($(\p0)!\quadranta*\rightanglelength!(#3)$), % Point on base line
+                \p2 = ($(\p0)!\quadrantb*\rightanglelength!(#2)$) in % Point on perpendicular line
+                let \p3 = ($(\p1)+(\p2)-(\p0)$) in  % Corner point of symbol
+            (\p1) -- (\p3) -- (\p2)
+        }
+    }
+}
+\pagestyle{fancy}
+\fancyhf{}
+\title{Using Programming to Solve Math Problems}
+\author{Andi Tse}
+\date{\today}
+%\rhead{Instructor: Ms. Hung}
+\lhead{Andi Tse}
+\chead{Using Programming to Solve Math Problems}
+\rfoot{BSSCC}
+%\lfoot{Data Management}
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+\pagestyle{fancy}
+
+ 
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+
+\section{Combinatorics Problem}
+\begin{custom-big}[Question 1]
+Find the number of four digits integers with no repeating digits, and are divisible by five, and are greater than 4500. 
+
+\end{custom-big}
+\subsection*{Combinatorics Approach}
+    \textbf{Case 1, the integer ends in 0:}\\
+    \underline{Case 1.1, the integer starts with 4, the number of integers are:}\\
+    \[\underline{1}\times \underline{5}\times \underline{7}\times \underline{1}=35\tag{The second digit has to be chosen from $5,6,7,8,9$}\]
+    
+    \underline{Case 1.2, the integer starts with 5 or above, the number of integers are:}\\
+    \[\underline{5}\times \underline{8}\times \underline{7}\times \underline{1}=280\]
+    
+    
+    \textbf{Case 2, the integer ends in 5:}\\
+    \underline{Case 2.1, the integer starts with 4, the number of integers are:}\\
+    \[\underline{1}\times \underline{4}\times \underline{7}\times \underline{1}=28\tag{The second digit has to be chosen from $6,7,8,9$}\]
+    
+    \underline{Case 2.2, the integer starts with 6 or above, the number of integers are:}\\
+    \[\underline{4}\times \underline{8}\times \underline{7}\times \underline{1}=224\]
+
+    Adding them all up, $35+280+28+224=567$\\
+    Doing all these case works is very brain consuming. If allowed we can cheat with programming. 
+    \pagebreak
+\subsection*{Programming Approach}
+
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		int cnt = 0;
+		for (int i = 1000; i < 100000; i++) {
+			if (isValid(i))
+				cnt++;
+		}
+		System.out.println(cnt);
+	}
+
+	public static boolean isValid(int n) {
+		char[] digits = String.valueOf(n).toCharArray();
+		Arrays.sort(digits);
+		if (digits.length != 4)
+			return false;
+   // if it is not a 4 digits integer, it is invalid
+		for (int i = 0; i < digits.length - 1; i++) {
+			if (digits[i] == digits[i + 1])
+				return false;
+    // if the digits are repeated, the integer is invalid
+		}
+
+		if (n % 5 != 0)
+			return false;
+		if (n <= 4500)
+			return false;
+		return true;
+	}
+}
+
+    
+\end{lstlisting}
+The program outputs 567, which matches in answer from Combinatorics Approach. After observing both methods, we can conclude that the question can be solved relatively easy with programming. 
+
+
+
+
+
+\pagebreak
+
+\section{Scientific Computation and the BigDecimal Data Type}
+\begin{custom-big}[Question 3]
+It is well known that if the square root of a natural number is not an integer, then it is irrational. The decimal expansion of such square roots is infinite without any repeating pattern at all.
+The square root of two is $1.41421356237309504880 \cdots$, and the digital sum of the first one hundred decimal digits is 475.
+For the first one hundred natural numbers, find the total of the digital sums of the first one hundred decimal digits for all the irrational square roots.
+\end{custom-big}
+
+
+\begin{lstlisting}
+import java.math.*;
+
+public class Main {
+	public static void main(String[] args) {
+		int a = 0;
+		for (int i = 1; i <= 100; i++) {
+			if (Math.sqrt(i) * Math.sqrt(i) == (int) Math.sqrt(i) * Math.sqrt(i))
+				continue;
+			a += sumSquareRootDigits100(i);
+		}
+		System.out.println(a);
+	}
+
+	public static int sumSquareRootDigits100(int n) {
+		int a = 0;
+
+		String d = new BigDecimal(n).sqrt(new MathContext(103)).toString();
+		int cnt = 0;
+		for (char c : d.toCharArray()) {
+			if (c == '.')
+				continue;
+			cnt++;
+			a += Character.getNumericValue(c);
+			if (cnt == 100)
+				break;
+		}
+		return a;
+	}
+} // end class
+\end{lstlisting}
+A further exploration can be found \href{https://en.wikipedia.org/wiki/Methods_of_computing_square_roots}{here}.
+
+
+\pagebreak
+\section{Data Management MDM4U1 Example (Game Fair)}
+\begin{custom-big}[MDM4U1 Game Fair]
+Given function $P(m)$, evaluate all $P(m)$ for all $m\in\mathbb{Z}$ such that $-200\leq m\leq 19800$
+\[P\left(m\right)=\sum_{\substack{x=0\\ \operatorname{mod}(n+m-15x,100)=0}}^{\floor{\frac{n+m}{15}}}{n\choose x}\left(\frac{13}{64}\right)^{2x}{n-x\choose \frac{m+n-15x}{100}}\left(\frac{1}{128}\right)^{\frac{m+n-15x}{50}}\left(\frac{15707}{16384}\right)^{n-x-\frac{m+n-15x}{100}}\]
+
+
+\end{custom-big}
+Desmos does not support conditional statement for sigmas. To evaluate the summation we have to write computer programs or utilize softwares like Wolfram Alpha.
+\medskip
+\begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+// Author: Andi Tse
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+import java.math.*;
+
+public class GameFairCalculation {
+	public static final int n = 200;
+
+	public static void main(String[] args) throws IOException {
+		File moneyFile = new File("Game Fair Probability Distribution Over Money.txt");
+		PrintWriter fw = new PrintWriter(moneyFile);
+		BigDecimal[] p = new BigDecimal[20002];
+
+		for (int m = -200; m <= 19800; m++) {
+			if (P(m).equals(new BigDecimal(0)))
+				continue;
+			p[m + 200] = P(m);
+		}
+
+		for (int m = -200; m <= 19800; m++) {
+			if (p[m + 200] == null || p[m + 200].equals(new BigDecimal(0)))
+				continue;
+			fw.print("\\left(" + m + ", ");
+			String s = String.valueOf(p[m + 200]);
+			if (s.contains("E")) {
+				s = s.substring(0, s.indexOf("E")) + "\\cdot 10^{" + s.substring(s.indexOf("E") + 1, s.length()) + "}";
+			}
+			fw.print(s);
+			fw.println("\\right)");
+		}
+		fw.close();
+
+		BigDecimal a = new BigDecimal(0);
+		for (int m = -200; m < 0; m++) {
+			if (p[m + 200] == null)
+				continue;
+			a = a.add(p[m + 200]);
+		}
+		System.out.println("P(m < 0) = " + a);
+		a = new BigDecimal(0);
+		for (int m = -200; m < 19800; m++) {
+			if (p[m + 200] == null)
+				continue;
+			a = a.add(p[m + 200]);
+		}
+		System.out.println("P(all m) = " + a);
+
+	}
+
+	public static BigDecimal P(int x, int y) {
+		return c(n, x).multiply(new BigDecimal(Math.pow(52.0 / 256, 2 * x)).multiply(c(n - x, y).multiply(
+				new BigDecimal(Math.pow(1.0 / 128, 2 * y) * Math.pow(1 - Math.pow(52.0 / 256, 2)- 
+						Math.pow(1.0 / 128,2),n - x - y)))));
+	}
+
+	public static BigDecimal P(int m) {
+
+		BigDecimal a = new BigDecimal(0);
+		for (int x = 0; x <= (n + m) / 15; x++) {
+			if ((n + m - 15 * x) % 100 == 0) {
+				a = a.add(c(n, x)
+						.multiply(new BigDecimal(Math.pow(52.0 / 256, 2 * x)).multiply(c(n - x, (m + n - 15 * x) / 100)
+								.multiply(new BigDecimal(Math.pow(1.0 / 128, (m + n - 15 * x) / 50.0)
+										* Math.pow(1 - Math.pow(52.0 / 256, 2) - Math.pow(1.0 / 128, 2),
+												n - x - (m + n - 15 * x) / 100.0))))));
+			}
+		}
+		return a;
+	}
+
+	public static BigDecimal c(final int N, final int K) {
+		// returns N choose K in BigDecimal
+		BigInteger ret = BigInteger.ONE;
+		for (int k = 0; k < K; k++) {
+			ret = ret.multiply(BigInteger.valueOf(N - k)).divide(BigInteger.valueOf(k + 1));
+		}
+		return new BigDecimal(ret);
+	}
+}
+\end{lstlisting}
+
+The BigDecimal data type was chosen over the double data type for higher precision. The program calculates the probability of every possible profit $m$ by the player and stores in the txt file, which can be accessed here\footnote{\url{https://drive.google.com/file/d/1kBNWo8XWLyiEc9TjvVEXgateX26_UnDV/view?usp=share_link}}. The probability distribution graph can be accessed here\footnote{\url{https://www.desmos.com/calculator/nsgkph1xhd}}. The program outputs to the console
+\begin{align*}
+    P(m < 0) = 0.95288533845462508395
+\end{align*}
+Players have $95.29\%$ chance of losing money in Andi's game. 
+
+
+
+
+\pagebreak
+\section{Bidirectional Recurrence Problem}
+\begin{custom-big}[Question 2]
+Let:
+$$
+\begin{array}{ll}
+x(0) & =0 \\
+x(1) & =1 \\
+x(2 k) & =\left(3 x(k)+2 x\left(\left\lfloor\frac{k}{2}\right\rfloor\right)\right) \bmod 2^{60} \text { for } k \geq 1, \text { where }\lfloor\rfloor \text { is the floor function } \\
+x(2 k+1) & =\left(2 x(k)+3 x\left(\left\lfloor\frac{k}{2}\right\rfloor\right)\right) \bmod 2^{60} \text { for } k \geq 1 \\
+y_n(k) & = \begin{cases}x(k) & \text { if } k \geq n \\
+2^{60}-1-\max \left(y_n(2 k), y_n(2 k+1)\right) & \text { if } k<n\end{cases} \\
+A(n) & =y_n(1)
+\end{array}
+$$
+You are given:
+$$
+\begin{array}{ll}
+x(2) & =3 \\
+x(3) & =2 \\
+x(4) & =11 \\
+y_4(4) & =11 \\
+y_4(3) & =2^{60}-9 \\
+y_4(2) & =2^{60}-12 \\
+y_4(1) & =A(4)=8 \\
+A(10) & =2^{60}-34 \\
+A\left(10^3\right) & =101881
+\end{array}
+$$
+Find $A\left(10^{12}\right)$
+\end{custom-big}
+
+
+
+\subsection*{Solution}
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+public class Main {
+	public static final long mod = (long) Math.pow(2, 60);
+
+	public static void main(String[] args) throws IOException {
+		System.out.println(A((long) Math.pow(10, 12)));
+	}
+
+	public static long x(long n) {
+		if (n == 0)
+			return 0;
+		if (n == 1)
+			return 1;
+		if (n == 2)
+			return 3;
+		if (n == 3)
+			return 2;
+		if (n == 4)
+			return 11;
+		if (n % 2 == 0) {
+			long k = n / 2;
+			return (3 * x(k) + 2 * x(k / 2)) % mod;
+		} else {
+			long k = (n - 1) / 2;
+			return (2 * x(k) + 3 * x(k / 2)) % mod;
+
+		}
+	}
+
+	public static long y(long n, long k) {
+		if (n == 4 && k == 4)
+			return 11;
+		if (n == 4 && k == 3)
+			return mod - 9;
+		if (n == 4 && k == 2)
+			return mod - 12;
+		if (n == 4 && k == 1)
+			return A(4);
+		if (k >= n) {
+			return x(k);
+		} else {
+			return mod - 1 - Math.max(y(n, 2 * k), y(n, 2 * k + 1));
+		}
+	}
+
+	public static long A(long n) {
+		if (n == 4)
+			return 8;
+		if (n == 10)
+			return mod - 34;
+		if (n == 1000)
+			return 101881;
+		return y(n, 1);
+	}
+}
+
+\end{lstlisting}
+
+\end{document}

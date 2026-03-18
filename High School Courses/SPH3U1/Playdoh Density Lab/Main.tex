@@ -1,0 +1,368 @@
+\documentclass{article}
+\usepackage{apacite}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{sophia}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\setlength{\parindent}{0pt}
+\usepackage{hyperref}
+
+\usepackage{multirow}
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage{pgfplots}
+\pgfplotsset{width=15cm,height=10cm,compat=1.9}
+
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+
+\usepackage{tikz}   
+\usepackage{pgfplots}  
+\usepgfplotslibrary{polar} % to determine the polar coordinates  
+\usepgflibrary{shapes.geometric}  
+\usetikzlibrary{calc}  
+
+\pagestyle{empty}% for cropping
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{zref-savepos}
+\usepackage{tabu}
+
+\newcounter{NoTableEntry}
+\renewcommand*{\theNoTableEntry}{NTE-\the\value{NoTableEntry}}
+
+\newcommand*{\strike}[2]{%
+  \multicolumn{1}{#1}{%
+    \stepcounter{NoTableEntry}%
+    \vadjust pre{\zsavepos{\theNoTableEntry t}}% top
+    \vadjust{\zsavepos{\theNoTableEntry b}}% bottom
+    \zsavepos{\theNoTableEntry l}% left
+    \hspace{0pt plus 1filll}%
+    #2% content
+    \hspace{0pt plus 1filll}%
+    \zsavepos{\theNoTableEntry r}% right
+    \tikz[overlay]{%
+      \draw
+        let
+          \n{llx}={\zposx{\theNoTableEntry l}sp-\zposx{\theNoTableEntry r}sp-\tabcolsep},
+          \n{urx}={\tabcolsep},
+          \n{lly}={\zposy{\theNoTableEntry b}sp-\zposy{\theNoTableEntry r}sp},
+          \n{ury}={\zposy{\theNoTableEntry t}sp-\zposy{\theNoTableEntry r}sp}
+        in
+        (\n{llx}, \n{lly}) -- (\n{urx}, \n{ury})
+      ;
+    }% 
+  }%
+}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\tikzset{
+    right angle quadrant/.code={
+        \pgfmathsetmacro\quadranta{{1,1,-1,-1}[#1-1]}     % Arrays for selecting quadrant
+        \pgfmathsetmacro\quadrantb{{1,-1,-1,1}[#1-1]}},
+    right angle quadrant=1, % Make sure it is set, even if not called explicitly
+    right angle length/.code={\def\rightanglelength{#1}},   % Length of symbol
+    right angle length=2ex, % Make sure it is set...
+    right angle symbol/.style n args={3}{
+        insert path={
+            let \p0 = ($(#1)!(#3)!(#2)$) in     % Intersection
+                let \p1 = ($(\p0)!\quadranta*\rightanglelength!(#3)$), % Point on base line
+                \p2 = ($(\p0)!\quadrantb*\rightanglelength!(#2)$) in % Point on perpendicular line
+                let \p3 = ($(\p1)+(\p2)-(\p0)$) in  % Corner point of symbol
+            (\p1) -- (\p3) -- (\p2)
+        }
+    }
+}
+\pagestyle{fancy}
+\fancyhf{}
+\title{Playdoh Density Lab Report}
+\author{Andi Xie}
+\date{\today}
+\rhead{Instructor: Mr. Sidhu}
+\lhead{Student: Andi Xie}
+\rfoot{May 12, 2022}
+\lfoot{SPH3U1 - 03}
+\pagestyle{fancy}
+
+ 
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Overview}
+\setcounter{page}{1}
+In this experiment, five playdoh balls will be created by hand, as close to spheres as possible with human eyes. The diameter is measured by a vernier caliper, the mass is measured by an electric balance.  The purpose is to investigate how the diameter and mass affect the density of a ball of plasticine, and eventually solve for the density of the playdoh. The aim of this experiment is to provide practice in taking measurements, making tables, then processing data and uncertainties.
+\begin{center}
+    \includegraphics[width=6cm]{Grade 11 Physics/Playdoh Density Lab/Playdoh Ball.png}
+\end{center}
+
+\section{Theory}
+\label{theory}The volume of a sphere, $V=\dfrac 43 \pi r^3$ where $r$ is the radius, so in terms of diameter ($d$),
+
+\begin{equation}
+    V=\frac 16 \pi d^3\label{volume-diameter}
+\end{equation}
+
+If the all balls are made of the same plasticine then all will have the same density. Density is
+defined as the mass per unit volume of a substance or, 
+\begin{equation}
+    \rho = \dfrac mV\label{density}
+\end{equation}
+Combine equations \ref{volume-diameter} and \ref{density} and solve for diameter ($d$) in terms of mass ($m$) and density ($\rho$):
+
+
+\begin{align}
+\because \rho &=\frac mV\nonumber\\
+    \therefore V&=\frac{m}{\rho}\nonumber\\
+    \frac{m}{\rho}&=\frac 16\pi d^3\nonumber\\
+    d^3&=\frac{6m}{\pi\rho}\nonumber\\
+    d&=\sqrt[3]{\frac{6m}{\pi\rho}}\nonumber\\
+    m&=\frac{\pi\rho}{6}d^3\label{m-d}
+\end{align}
+
+
+
+\section{Graph}
+The graph of Mass vs. Diameter should look likes some cubic relationship:
+
+
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+\begin{axis}[
+    enlargelimits=false,
+    title={Mass vs. Diameter},
+    xlabel={Diameter (cm)},
+    ylabel={Mass (g)},
+    xmin=0, xmax=4,
+    ymin=0, ymax=40,
+    xtick=false,
+    ytick=false,
+    legend pos=south east,
+    ymajorgrids=false,
+    xmajorgrids=false,
+    grid style=dashed,
+]
+
+
+\addplot [
+    domain=0:4, 
+    samples=100, 
+    color=black,
+    ]
+{0.871092229727*x^3};
+\addlegendentry{\(m=\frac{\pi\rho}{6}d^3\)}
+\end{axis}
+\end{tikzpicture}
+
+\end{center}
+
+
+
+Mass vs. Diameter Cubed would be a linear graph:
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+\begin{axis}[
+    enlargelimits=false,
+    title={Mass vs. Diameter Cubed},
+    xlabel={Diameter Cubed (cm$^3$)},
+    ylabel={Mass (g)},
+    xmin=0, xmax=4,
+    ymin=0, ymax=4,
+    xtick=false,
+    ytick=false,
+    legend pos=south east,
+    ymajorgrids=true,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+
+
+\addplot [
+    domain=0:4, 
+    samples=100, 
+    color=black,
+    ]
+{0.871092229727*x};
+\addlegendentry{\(m=\frac{\pi\rho}{6}d^3\)}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+
+Because $m=\frac{\pi\rho}{6}d^3$, therefore the slope of the $d^3$ vs. m graph is $\frac{\pi\rho}{6}$. We can relate $m=\frac{\pi\rho}{6}d^3$ to the equation of a straight line ($y=mx+b$), where $y$ represents $m$ (mass), $m$ (slope) represents $\frac{\pi\rho}{6}$, $x$ represent $d^3$, and $b=0$. Since $\frac \pi 6$ is a constant without unit, so the slope of the equation has the same unit as $\rho$ (density). And the density has a unit of g/cm$^3$ in this experiment.
+
+
+
+
+\section{Apparatus}
+Materials used in the experiment:
+\begin{itemize}
+    \item Vernier caliper
+    \item Five balls of plasticine with different sizes
+    \item Electric balance
+\end{itemize}
+
+
+
+
+
+
+\section{Variables}
+The lab involves mass, diameter, and density. 
+\begin{center}
+    \begin{tabular}{|c||c|c|c|}\hline 
+            \strike{|c||}{} & $m$ & $d$ & $\rho$ \\\hline
+            Name & Mass & Diameter & Density \\\hline
+            Type & Dependent & Controlled & Independent \\\hline
+            Unit & g & cm & g/cm$^3$ \\\hline
+    \end{tabular}
+\end{center}
+
+
+\section{Procedure}
+According to Wikipedia, Accuracy is how close or far off a given set of measurements (observations or readings) are to their true value, while precision is how close or dispersed the measurements are to each other. The procedure of the lab is as followed:
+\begin{enumerate}
+    \item Hand make five playdoh balls with different sizes
+    \item Measure and record the diameter of each ball using a vernier caliper
+    \item Means and record the mass of each ball with an electric balance
+    \item Import five sets of data into Google Sheet and \LaTeX\ for further analysis
+\end{enumerate}
+
+
+\section{Observations}
+
+\scalebox{0.9}{
+\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|  }
+ \hline
+Number &Mass (g) $\pm 0.01$ &\multicolumn{5}{c|}{Diameter (cm) $\pm 0.001$}&Average Diameter&	Density (g/cm$^3$)\ $\pm 0.01$\\\hline
+Ball \#1&3.89&	1.659&	1.573&	1.608&	1.625&	1.627&	1.618&	1.753\\\hline
+Ball \#2&5.39&	1.741&	1.819&	1.828&	1.817&	1.814&	1.804&	1.754\\\hline
+Ball \#3&6.81&	1.910&	1.984&	1.957&	1.979&	1.970&	1.960&	1.727\\\hline
+Ball \#4&10.48&	2.335&	2.310&	2.280&	2.257&	2.349&	2.306&	1.632\\\hline
+Ball \#5&13.16&	2.500&	2.511&	2.528&	2.533&	2.517&	2.518&  1.575\\\hline
+\end{tabular}}
+
+
+
+\section{Data Processing}
+The uncertainty in diameter is given by the formula
+$$\Delta d=\frac{d_{\text{max}}-d_{\text{min}}}{2}$$
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ |c|c|c|c|  }
+ \hline
+Number	&Mass (g)	&Avg Diameter (cm)	&Diameter Uncertainty $\Delta d$ (cm)\\\hline
+Ball \#1	&3.89&	1.618&	0.043\\\hline
+Ball \#2	&5.39&	1.804&	0.0435\\\hline
+Ball \#3&	6.81&	1.960&	0.037\\\hline
+Ball \#4	&10.48&	2.306&	0.046\\\hline
+Ball \#5	&13.16&	2.518&	0.0165\\\hline
+\end{tabular}
+\caption{Diameter Uncertainty}
+\label{table:2}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+
+The graph has a polynomial equation with degree of three
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Number&	Mass (g)&	Diameter Cubbed\\\hline
+Ball \#1	&3.89	&4.239\\\hline
+Ball \#2	&5.39	&5.869\\\hline
+Ball \#3	&6.81	&7.530\\\hline
+Ball \#4	&10.48	&12.266\\\hline
+Ball \#5	&13.16	&15.961\\\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    enlargelimits=false,
+    title={Mass vs. Diameter$^3$},
+    xlabel={Diameter$^3$ (cm$^3$)},
+    ylabel={Mass (g)},
+    xmin=0, xmax=16,
+    ymin=0, ymax=15,
+    xtick={0,2,4,6,8,10,12,14,16},
+    ytick={0,3,6,9,12,15},
+    legend pos=north west,
+    ymajorgrids=true,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=black,
+    only marks,
+    mark=square,]
+table[meta=Mass]
+{DCubed Mass.dat};
+
+
+
+\addplot [
+    domain=0:16, 
+    samples=100, 
+    color=black,
+    ]
+{0.786*x+0.738};
+\addlegendentry{\(m=0.786d^3+0.738\)}
+
+\begin{comment}
+\addplot [
+    domain=0:16, 
+    samples=100, 
+    color=red,
+    ]
+{0.8710922297*x};
+\addlegendentry{\(m=0.8710922297d^3\)}
+\end{comment}
+
+
+\end{axis}
+\end{tikzpicture}
+\label{m-d^3}
+\end{center}
+The graph is now a straight line, with slope of $0.786$. From equation \ref{m-d}, $\frac{\pi\rho}{6}=0.786$, therefore $\rho=1.501$, this is our experimental value. Now comparing this value to the value 1.9 g/cm$^3$ given on the instruction sheet:
+\begin{align*}
+    \% \text{difference}&=\left|\frac{\text{experimental}-\text{theoretical}}{\text{theoretical}}\right|\times 100\%\\
+    &=\frac{1.501-1.9}{1.9}\times 100\%\\
+    &\approx 21\%
+\end{align*}
+
+
+
+\section{Conclusion}
+Since the mass is proportionate to the diameter cubed, Mass-Diameter will be a cubic relationship, with formula of $m=ad^3$, where $a=0.786$. Therefore $\boxed{m=0.786d^3}$. The lab has a low accuracy but a high precision. From the Mass-Diameter$^3$ graph the data is off by 0.738, although acceptable but still shows a relatively low accuracy. From table \ref{table:2} we can see that the diameters are well below $\pm 0.01$ cm away from each other which shows high precision. 
+
+
+\section{Evaluation}
+
+There are three main factors affecting the accuracy and precision of this experiment: 
+\begin{enumerate}
+    \item If the balls are not spherical, the diameters in each set would have lower precision. But the factor does not have much effect on the final density result because we made five balls, each measured five times, unless we were extremely unlucky and all diameters measured are large/small. If some are large and some are small then the error would be neutralized when averaging the diameters. In fact, the diameters have high precision so this factor does not affect the final density too much. We can reduce the error by spending more time to make the balls more spherical. Or instead of directly measure the diameter, we can try measuring the volume of the balls by emerging them under water, then calculate the diameter. 
+    \item The caliper squished the balls because it had to touch them for measurement. The diameters would be smaller than they actually are, which gives lower accuracy to the result. The graph would show a higher slope, steeper, or in math language, a horizontal compression to the graph. The error can be minimized also by measure the volume with water. \item Impurity in the playdoh lower the accuracy of the final density. If there was air in the playdoh, since air is lighter than playdoh, the overall density would be lower. If there was metal, since metal is heavier, density would be higher. This issue is easy to resolve, use new playdoh, ensure that the table and the hands are clean to avoid playdoh gets mixed with dirts. 
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage{apacite}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{sophia}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\setlength{\parindent}{0pt}
+\usepackage{hyperref}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage{pgfplots}
+\pgfplotsset{width=15cm,height=10cm,compat=1.9}
+
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+
+
+\pagestyle{empty}% for cropping
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{zref-savepos}
+\usepackage{tabu}
+
+\newcounter{NoTableEntry}
+\renewcommand*{\theNoTableEntry}{NTE-\the\value{NoTableEntry}}
+
+\newcommand*{\strike}[2]{%
+  \multicolumn{1}{#1}{%
+    \stepcounter{NoTableEntry}%
+    \vadjust pre{\zsavepos{\theNoTableEntry t}}% top
+    \vadjust{\zsavepos{\theNoTableEntry b}}% bottom
+    \zsavepos{\theNoTableEntry l}% left
+    \hspace{0pt plus 1filll}%
+    #2% content
+    \hspace{0pt plus 1filll}%
+    \zsavepos{\theNoTableEntry r}% right
+    \tikz[overlay]{%
+      \draw
+        let
+          \n{llx}={\zposx{\theNoTableEntry l}sp-\zposx{\theNoTableEntry r}sp-\tabcolsep},
+          \n{urx}={\tabcolsep},
+          \n{lly}={\zposy{\theNoTableEntry b}sp-\zposy{\theNoTableEntry r}sp},
+          \n{ury}={\zposy{\theNoTableEntry t}sp-\zposy{\theNoTableEntry r}sp}
+        in
+        (\n{llx}, \n{lly}) -- (\n{urx}, \n{ury})
+      ;
+    }% 
+  }%
+}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\tikzset{
+    right angle quadrant/.code={
+        \pgfmathsetmacro\quadranta{{1,1,-1,-1}[#1-1]}     % Arrays for selecting quadrant
+        \pgfmathsetmacro\quadrantb{{1,-1,-1,1}[#1-1]}},
+    right angle quadrant=1, % Make sure it is set, even if not called explicitly
+    right angle length/.code={\def\rightanglelength{#1}},   % Length of symbol
+    right angle length=2ex, % Make sure it is set...
+    right angle symbol/.style n args={3}{
+        insert path={
+            let \p0 = ($(#1)!(#3)!(#2)$) in     % Intersection
+                let \p1 = ($(\p0)!\quadranta*\rightanglelength!(#3)$), % Point on base line
+                \p2 = ($(\p0)!\quadrantb*\rightanglelength!(#2)$) in % Point on perpendicular line
+                let \p3 = ($(\p1)+(\p2)-(\p0)$) in  % Corner point of symbol
+            (\p1) -- (\p3) -- (\p2)
+        }
+    }
+}
+\pagestyle{fancy}
+\fancyhf{}
+\title{Andi's Solution To IYMC Qualification Round}
+\author{Jingzhi Andi Xie}
+\date{\today}
+\lhead{Jingzhi Andi Xie}
+\rhead{\today}
+\pagestyle{fancy}
+
+ 
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{custom-big}[Problem A]
+\[\left(\log\left(3^x\right)-2\log\left(3\right)\right)\cdot\left(x^2-1\right)=0\]
+Case 1:
+\begin{align*}
+    \log\left(3^x\right)-2\log\left(3\right)&=0\\
+    \log\left(\frac{3^x}{9}\right)&=0\\
+    \frac{3^x}{9}&=1\\
+    3^x&=9\\
+    x&=2
+\end{align*}
+Case 2:
+\begin{align*}
+    x^2-1&=0\\
+    \left(x+1\right)\left(x-1\right)&=0\\
+    x&=\pm 1
+\end{align*}
+$\therefore \boxed{x=\pm 1,2}$
+\end{custom-big}
+
+\begin{custom-big}[Problem B]
+\begin{align*}
+    &1+\frac{3}{\pi}+\frac{3}{\pi^2}+\frac{3}{\pi^3}+\cdots\\
+    =\ &1+\frac{\frac{3}{\pi}}{1-\frac{1}{\pi}}\\
+    =\ &\boxed{1+\frac{3}{\pi-1}}
+\end{align*}
+\end{custom-big}
+
+
+\begin{custom-big}[Problem C]
+\begin{align*}
+    &\log\left[\log\left(3\right)\cdot\left(\log\left(2\right)\cdot\left(\frac{\sqrt{3}-2\sin\left(\pi/3\right)}{\pi^3+1}+1\right)\right)-\log\left(2\right)\log\left(3\right)+\left(-1\right)^{100}\right]\\
+    =\ &\log\left[\log\left(3\right)\cdot\left(\log\left(2\right)\cdot\left(\frac{\sqrt{3}-2\left(\frac{\sqrt{3}}{2}\right)}{\pi^3+1}+1\right)\right)-\log\left(2\right)\log\left(3\right)+\left(-1\right)^{100}\right]\\
+    =\ &\log\left[\log\left(3\right)\log\left(2\right)-\log\left(2\right)\log\left(3\right)+\left(-1\right)^{100}\right]\\
+    =\ &\log\left(1\right)\\
+    =\ &\boxed{0}
+\end{align*}
+\end{custom-big}
+
+\begin{custom-big}[Problem D]
+\begin{align*}
+    \sigma\left(p^2\right)&=3\ \forall \ p\in\mathbb{P}\left(1,p,p^2\right)\\
+\because p&\ge 2\\
+\therefore n&\ge 4\\
+\therefore \sigma\left(n\right)&<2n\text{ for all prime }p
+\end{align*}
+\end{custom-big}
+
+
+\begin{custom-big}[Problem E]
+\begin{align*}
+    \because \text{Base of the grey}\triangle &=\frac 1 2\text{ Base of the big}\triangle\\
+    \therefore\text{From similarity, height of the grey}\triangle &=\frac 1 2\text{ Height of the big}\triangle\\
+    \therefore \left[\text{Grey}\triangle\right]&=\frac 14\left[\text{Big}\triangle\right]\\
+    \left[\text{Grey}\triangle\right]&=\frac 14\left(\frac{\sqrt{3}}{4}a^2\right)\\
+    \left[\text{Grey}\triangle\right]&=\boxed{\frac{\sqrt{3}}{16}a^2}
+\end{align*}
+\end{custom-big}
+\end{document}

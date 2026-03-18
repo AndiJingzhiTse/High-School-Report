@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage{apacite}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{andi}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\setlength{\parindent}{0pt}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage{soul}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage{pgfplots}
+\pgfplotsset{width=15cm,height=10cm,compat=1.9}
+
+
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+
+
+\pagestyle{empty}% for cropping
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{zref-savepos}
+\usepackage{tabu}
+
+\newcounter{NoTableEntry}
+\renewcommand*{\theNoTableEntry}{NTE-\the\value{NoTableEntry}}
+
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\pagestyle{fancy}
+\fancyhf{}
+\title{Euclid Workshop}
+\author{Andi Tse}
+\date{March 2, 2023}
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+\pagestyle{fancy}
+
+ 
+
+
+\begin{document}
+\begin{custom-big}
+Shy Marven wants to ask Andi for a date. Marven being a nerd, he has two ways to ask for a date. The first method is to buy Andi the AOPS textbook \textit{Intermediate Algebra}. Marven has 90\% of chance of success rate to fraud his mom to get the money. However, because Andi already owns the book (he doesn't), Andi only has 10\% of chance of saying yes. Another method for Marven is to hack Teach Assist and give Andi 100 in his Data Management class. Marven being a programming genius, has 1\% of success rate. If he success, Andi will 100\% say yes to the date. Marven loves Andi so much that he will try both ways. If Andi says yes in any of the two, they will be dating. What is the probability that Andi and Marven will be kissing in next week's Math Club. 
+\end{custom-big}
+
+\begin{solution}
+Since they will be dating if Andi says yes to any of them,
+\begin{align*}
+P(\text{dating})&=1-P(\text{Andi says no to both})\\
+&=1-(1-90\%\times 10\%)(1-1\%\times 100\%)\\
+&=9.91\%
+\end{align*}
+\end{solution}
+
+\begin{custom-big}
+Express $\sec 2\theta$ in terms of $\tan\theta$
+\end{custom-big}
+
+\begin{solution}
+    Recall that $\sec x=\frac{1}{\cos x}$
+    \begin{align*}
+        \sec 2\theta&=\frac{1}{1-2\sin^2\theta}
+    \end{align*}
+    The question came down to express $\sin \theta$ in $\tan\theta$. Drawing a standard position in terms of $\tan\theta$:
+    \begin{center}
+        \includegraphics[width=6cm]{Diagrams/standard position expressed in tan.png}
+    \end{center}
+    \begin{align*}
+        \sin\theta&=\frac{\tan\theta}{\sqrt{\tan^2\theta+1}}\\
+        \sec 2\theta&=\frac{1}{1-2\left(\frac{\tan\theta}{\sqrt{\tan^2\theta+1}}\right)^2}\\
+        &=\frac{1}{1-2\left(\frac{\tan^2\theta}{\tan^2\theta+1}\right)}\\
+        &=\frac{\tan^2\theta+1}{\tan^2\theta+1-2\tan^2\theta}\\
+        &=\frac{1+\tan^2\theta}{1-\tan^2\theta}
+    \end{align*}
+\end{solution}
+
+\begin{custom-big}
+Andi, Chantal, and Fiona were on a hike and were wondering how far away the nearest town was. When Andi said, "We are at least $6$ miles away," Chantal replied, "We are at most $5$ miles away." Fiona then remarked, "Actually the nearest town is at most $4$ miles away." It turned out that the executives have horrible eyesights from too much math grind, none of the three statements were true. Let $d$ be the distance in miles to the nearest town. Which of the following intervals is the set of all possible values of $d$?
+\end{custom-big}
+
+\begin{solution}
+    %https://artofproblemsolving.com/wiki/index.php/2018_AMC_10A_Problems/Problem_5
+
+    Closed interval will receive partial for this question.\\
+
+    For each of the false statements, we identify its corresponding true statement. Note that:
+
+$\mathrm{False}\cap\mathrm{True}=\varnothing.$
+$\mathrm{False}\cup\mathrm{True}=[0,\infty).$
+We construct the following table:\[\begin{array}{c||c|c} & &  \\ [-2.5ex] \textbf{Hiker} & \textbf{False Statement} & \textbf{True Statement} \\ [0.5ex] \hline & & \\ [-2ex] \textbf{Andi} & [6,\infty) & [0,6) \\  & & \\ [-2.25ex] \textbf{Chantal} & [0,5] & (5,\infty)  \\ & & \\ [-2.25ex] \textbf{Fiona} & [0,4] & (4,\infty) \end{array}\]Taking the intersection of the true statements, we have\[[0,6)\cap(5,\infty)\cap(4,\infty)=(5,6)\cap(4,\infty)= (5,6).\]
+\end{solution}
+
+\begin{custom-big}
+Find the maximum value of $\frac{ab}{(a+b)^2}$
+\end{custom-big}
+
+\begin{solution}
+    From AM-GM, 
+    \begin{align*}
+        \frac{a+b}{2}\ge \sqrt{ab}\\
+        \frac{\sqrt{ab}}{a+b}\leq \frac 12\\
+        \frac{ab}{(a+b)^2}\leq \frac 14
+    \end{align*}
+    Next we will show that the value $\frac 14$ is achievable. Take $a=b$,
+    \begin{align*}
+        \frac{a^2}{(2a)^2}&=\frac 14
+    \end{align*}
+    Therefore the maximum value is $\frac 14$.
+\end{solution}
+
+
+\begin{custom-big}
+The seven small triangles have areas of $1,$ and $\triangle ABC$ has area $40$. All triangles are similar to isosceles $\triangle ABC$, with $AB=AC$. What is the area of trapezoid $DBCE$?
+
+\begin{center}
+    \includegraphics[width=10cm]{Diagrams/2018 AMC 10A Problem 9.png}
+\end{center}
+\end{custom-big}
+
+\begin{solution}
+    Let $x$ be the area of $ADE$. Note that $x$ is comprised of the $7$ small isosceles triangles and a triangle similar to $ADE$ with side length ratio $3:4$ (so an area ratio of $9:16$). Thus, we have\[x=7+\dfrac{9}{16}x.\]This gives $x=16$, so the area of $DBCE=40-x=\boxed{24}$.
+\end{solution}
+
+\end{document}

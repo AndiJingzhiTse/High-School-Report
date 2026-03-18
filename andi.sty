@@ -1,0 +1,298 @@
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry} % Page Dimensions
+
+
+\usepackage{cancel}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\setlength{\parskip}{\baselineskip}%
+\usepackage[breakable,many]{tcolorbox}
+% Math
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[inline]{asymptote}
+\usepackage{xcolor}
+
+% Allows for hyperlinking
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=magenta,
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% MATH SHORT CUT COMMANDS %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+   \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+   % ex. \floor{2.8}
+   
+    \newcommand{\ceiling}[1]{\left\lceil #1 \right\rceil}
+    \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+    \newcommand{\dg}{^\circ}
+    \DeclareMathOperator*{\lcm}{lcm}
+    \newcommand{\diff}[1]{\mathrm{d}  #1}
+    \newcommand{\dd}[1]{\dfrac{\text{d}}{\text{d}#1}}
+    \newcommand{\ddd}[2]{\dfrac{\text{d}#1}{\text{d}#2}}
+    \newcommand{\ds}{\displaystyle}
+    \newcommand*\eval[3]{\left.#1\right\rvert_{#2}^{#3}}
+    
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\newcommand{\vect}{\ensuremath{\mathbf{#1}}}
+    
+\newcommand*{\strike}[2]{%
+  \multicolumn{1}{#1}{%
+    \stepcounter{NoTableEntry}%
+    \vadjust pre{\zsavepos{\theNoTableEntry t}}% top
+    \vadjust{\zsavepos{\theNoTableEntry b}}% bottom
+    \zsavepos{\theNoTableEntry l}% left
+    \hspace{0pt plus 1filll}%
+    #2% content
+    \hspace{0pt plus 1filll}%
+    \zsavepos{\theNoTableEntry r}% right
+    \tikz[overlay]{%
+      \draw
+        let
+          \n{llx}={\zposx{\theNoTableEntry l}sp-\zposx{\theNoTableEntry r}sp-\tabcolsep},
+          \n{urx}={\tabcolsep},
+          \n{lly}={\zposy{\theNoTableEntry b}sp-\zposy{\theNoTableEntry r}sp},
+          \n{ury}={\zposy{\theNoTableEntry t}sp-\zposy{\theNoTableEntry r}sp}
+        in
+        (\n{llx}, \n{lly}) -- (\n{urx}, \n{ury})
+      ;
+    }% 
+  }%
+}
+
+
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% COLORS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{my-blue}{HTML}{85BEFF}
+\definecolor{my-pink}{HTML}{f5bac4}
+\definecolor{background}{HTML}{f2f2f2}
+\definecolor{my-yellow}{HTML}{F6BD60}
+\definecolor{my-red}{HTML}{fa655c}
+\definecolor{my-purple}{HTML}{BCB0E8}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% Style Definitions %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% Simple Gray Boxes %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tcbset{simple/.style={
+    breakable,
+    enhanced,
+    outer arc=0pt,
+    arc = 0pt,
+    colback=background, % Background color
+    colframe=background, % Border Color
+    coltitle=black, % Title Color
+    fonttitle=\bfseries,
+    attach title to upper,
+    after title={:\ },
+    segmentation style={dashed, gray},
+    }
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%   Colored Boxes   %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tcbset{yellow-labeled/.style={
+  breakable,
+  enhanced,
+  outer arc=0pt,
+  arc=10pt,
+  colframe=my-yellow,
+  colback=my-yellow!0,
+  attach title to upper,
+  coltitle=my-yellow!200,
+  after title={\medbreak},
+  }
+}
+
+\tcbset{pink-labeled/.style={
+  breakable,
+  enhanced,
+  outer arc=0pt,
+  arc=0pt,
+  colframe=my-pink,
+  colback=my-pink!5,
+  attach title to upper,
+  coltitle=my-pink!200,
+  after title={\medbreak},
+  }
+}
+
+\tcbset{red-labeled/.style={
+  breakable,
+  enhanced,
+  outer arc=0pt,
+  arc=0pt,
+  colframe=my-red,
+  colback=my-red!5,
+  attach title to upper,
+  coltitle=my-red!200,
+  after title={\medbreak},
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%   1-Sided Boxes   %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tcbset{one-sided-yellow/.style={
+    breakable,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={2pt}{0pt}{my-yellow},
+    colback=my-yellow!10,
+    coltitle=my-yellow!200,
+    after title={:\ },
+    sharp corners,
+    attach title to upper,
+    }
+}
+
+\tcbset{one-sided-blue/.style={
+    breakable,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={2pt}{0pt}{my-blue},
+    colback=my-blue!10,
+    coltitle=my-blue!200,
+    after title={:\ },
+    sharp corners,
+    attach title to upper,
+    }
+}
+
+\tcbset{one-sided-yellow/.style={
+    breakable,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={2pt}{0pt}{my-pink},
+    colback=my-pink!10,
+    coltitle=my-pink!200,
+    after title={:\ },
+    sharp corners,
+    attach title to upper,
+    }
+}
+
+\tcbset{one-sided-pink/.style={
+    breakable,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={2pt}{0pt}{my-pink},
+    colback=my-pink!10,
+    coltitle=my-pink!200,
+    after title={:\ },
+    sharp corners,
+    attach title to upper,
+    }
+}
+\tcbset{one-sided-red/.style={
+    breakable,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={2pt}{0pt}{my-red},
+    colback=my-red!10,
+    coltitle=my-red!200,
+    after title={:\ },
+    sharp corners,
+    attach title to upper,
+    }
+}
+\tcbset{one-sided-purple/.style={
+    breakable,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={2pt}{0pt}{my-purple},
+    colback=my-purple!10,
+    coltitle=my-purple!200,
+    after title={:\ },
+    sharp corners,
+    attach title to upper,
+    }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%   Box Definitions %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtcolorbox[auto counter]{example}[1][]{
+  yellow-labeled,
+  title=\textbf{Example \thetcbcounter \ ({#1})},
+}
+
+\newtcolorbox[auto counter]{custom-big}[1][]{
+  pink-labeled,
+  title=\textbf{{#1}},
+}
+
+\newtcolorbox[auto counter]{custom-two}[1][]{
+  red-labeled,
+  title=\textbf{{#1}},
+}
+
+\newtcolorbox[auto counter]{conclusion}{
+  red-labeled,
+  title=\textbf{Conclusion},
+}
+
+\newtcolorbox{definition}{
+    one-sided-red,
+    title=\textbf{Definition},
+}
+
+\newtcolorbox{theorem}{
+    one-sided-blue,
+    title=\textbf{Theorem},
+}
+\newtcolorbox{solution}{
+    one-sided-blue,
+    title=\textbf{Solution},
+}
+\newtcolorbox{challenge}{
+    red-labeled,
+    title=\textbf{Challenge},
+}
+
+\newtcolorbox{exercise}{
+    one-sided-purple,,
+    title=\textbf{Exercise}
+}
+
+\newtcolorbox{prooff}{
+    one-sided-pink,
+    title=\textbf{Proof}
+}
+
+\newtcolorbox{custom-small}[1][]{
+    one-sided-purple,
+    title=\textbf{{#1}},
+}
+\newtcolorbox{formula}{
+    one-sided-red,
+    title=\textbf{Formula},
+}
+
+\newtcolorbox[auto counter]{custom-simple}[1][]{
+    simple,
+    title={#1},
+    % add a `\thetcbcounter` to the end if you want to keep track of numberings.
+}

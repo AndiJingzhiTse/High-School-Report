@@ -1,0 +1,334 @@
+\documentclass{article}
+\usepackage{apacite}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{sophia}
+\usepackage[utf8]{inputenc}
+\usepackage{array}\usepackage{mathtools}
+
+\setlength{\parindent}{0pt}
+\usepackage{hyperref}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage{pgfplots}
+\pgfplotsset{width=15cm,height=10cm,compat=1.9}
+
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+
+
+\pagestyle{empty}% for cropping
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{zref-savepos}
+\usepackage{tabu}
+
+\newcounter{NoTableEntry}
+\renewcommand*{\theNoTableEntry}{NTE-\the\value{NoTableEntry}}
+
+\newcommand*{\strike}[2]{%
+  \multicolumn{1}{#1}{%
+    \stepcounter{NoTableEntry}%
+    \vadjust pre{\zsavepos{\theNoTableEntry t}}% top
+    \vadjust{\zsavepos{\theNoTableEntry b}}% bottom
+    \zsavepos{\theNoTableEntry l}% left
+    \hspace{0pt plus 1filll}%
+    #2% content
+    \hspace{0pt plus 1filll}%
+    \zsavepos{\theNoTableEntry r}% right
+    \tikz[overlay]{%
+      \draw
+        let
+          \n{llx}={\zposx{\theNoTableEntry l}sp-\zposx{\theNoTableEntry r}sp-\tabcolsep},
+          \n{urx}={\tabcolsep},
+          \n{lly}={\zposy{\theNoTableEntry b}sp-\zposy{\theNoTableEntry r}sp},
+          \n{ury}={\zposy{\theNoTableEntry t}sp-\zposy{\theNoTableEntry r}sp}
+        in
+        (\n{llx}, \n{lly}) -- (\n{urx}, \n{ury})
+      ;
+    }% 
+  }%
+}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\tikzset{
+    right angle quadrant/.code={
+        \pgfmathsetmacro\quadranta{{1,1,-1,-1}[#1-1]}     % Arrays for selecting quadrant
+        \pgfmathsetmacro\quadrantb{{1,-1,-1,1}[#1-1]}},
+    right angle quadrant=1, % Make sure it is set, even if not called explicitly
+    right angle length/.code={\def\rightanglelength{#1}},   % Length of symbol
+    right angle length=2ex, % Make sure it is set...
+    right angle symbol/.style n args={3}{
+        insert path={
+            let \p0 = ($(#1)!(#3)!(#2)$) in     % Intersection
+                let \p1 = ($(\p0)!\quadranta*\rightanglelength!(#3)$), % Point on base line
+                \p2 = ($(\p0)!\quadrantb*\rightanglelength!(#2)$) in % Point on perpendicular line
+                let \p3 = ($(\p1)+(\p2)-(\p0)$) in  % Corner point of symbol
+            (\p1) -- (\p3) -- (\p2)
+        }
+    }
+}
+\pagestyle{fancy}
+\fancyhf{}
+\title{Andi's Solution To IYMC Pre-Final Round}
+\author{Jingzhi Andi Xie}
+\date{\today}
+\chead{Jingzhi Andi Xie}
+\lhead{Bayview Secondary School}
+\rhead{\today}
+\rfoot{International Youth Math Challenge}
+\pagestyle{fancy}
+
+ 
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\begin{center}
+    \includegraphics[width=3cm]{Diagrams/ango.png}
+    \includegraphics[width=3cm]{Diagrams/angold.png}
+    \includegraphics[width=3cm]{Diagrams/sango.png}
+\end{center}
+\pagebreak
+\section{Part A}
+\begin{custom-big}[Problem A.1]
+Determine $A, B, C$ such that all of the following functions intersect the point $(2, 2)$:
+\begin{align*}
+    f_1(x)&=Ax+1 & f_2(x)&=Bx^2+2 & f_3(x)&=Cx^3+3
+\end{align*}
+\end{custom-big}
+
+\begin{solution}[System of Equations]
+\[
+\begin{cases}
+2A+1=2\\
+4B+2=2\\
+8C+3=2
+\end{cases}\implies
+\begin{cases}
+A=\frac 12\\
+B=0\\
+C=-\frac 18
+\end{cases}
+\]
+\end{solution}
+
+\begin{custom-big}[Problem A.2]
+Find all $x\in\mathbb R$ that are solutions to this equation: $0=\left(1-x-x^2-\cdots\right)\cdot\left(2-x-x^2-\cdots\right)$
+\end{custom-big}
+
+\begin{solution}[Infinite Geometric Sum]\\
+The two cases are 
+\begin{align*}
+    x+x^2+\cdots&=1 & x+x^2+\cdots&=2\\
+    \frac{x}{1-x}&=1 & \frac{x}{1-x}&=2\\
+    x&=\frac 12&x&=\frac{3}{2}
+\end{align*}
+\end{solution}
+
+\begin{custom-big}[Problem A.3]
+Find the derivative $f'(x)$ of the following function with respect to $x$:
+$$\sin \left(\pi ^{\sin x}+\pi ^{\cos x}\right)$$
+\end{custom-big}
+
+\begin{solution}[Chain Rule]
+\begin{align*}
+    f'(x)&=\frac{d}{dx}\left(\pi^{\sin x}+\pi^{\cos x}\right)\cos\left(\pi^{\sin x}+\pi^{\cos x}\right)\\
+    &=\left(\cos x\left(\ln \pi\left(\pi^{\sin x}\right)\right)-\sin x\left(\ln\pi\left(\pi^{\cos x}\right)\right)\right)\cos\left(\pi^{\sin x}+\pi^{\cos x}\right)\\
+    &=\ln\pi\cos\left(\pi^{\sin x}+\pi^{\cos x}\right)\left(\pi^{\sin x}\cos x-\pi^{\cos x}\sin x\right)
+\end{align*}
+\end{solution}
+
+
+\pagebreak
+\section{Part B}
+\begin{custom-big}[Problem B.1]
+Let $H_n$ define the sum of reciprocals of all integers from 1 to $n$:
+$$H_n=1+\frac 12+\frac 13+\frac 14+\cdots+\frac 1n$$
+Prove the following identity:
+$$H_{2n}-H_n=1-\frac 12+\frac 13-\frac 14\pm\cdots+\frac{1}{2n-1}-\frac{1}{2n}$$
+\end{custom-big}
+
+\begin{solution}
+\begin{align*}
+LHS &= H_{2n}-\left(1+\frac 13+\cdots+\frac{1}{2n-1}\right)-\left(H_n-\left(\frac 12+\frac 14+\cdots+ \frac{1}{2n}\right)\right)\\
+      &\qquad + \left(1+\frac 13+\cdots+\frac{1}{2n-1}\right)-\left(\frac 12+\frac 14+\cdots+\frac{1}{2n}\right)\\
+  &=\frac 12 H_n-\frac 12H_n+\left(1-\frac 12+\frac 13-\frac 14\pm\cdots+\frac{1}{2n-1}-\frac{1}{2n}\right)\\
+  &=1-\frac 12+\frac 13-\frac 14\pm\cdots+\frac{1}{2n-1}-\frac{1}{2n}\\
+  &=RHS
+\end{align*}
+\end{solution}
+
+\begin{custom-big}[Problem B.2]
+It is well known that squared brackets do not simply square the individual terms:
+\begin{align*}
+    (1+2)^2&\neq 1^2+2^2\\
+    (1+2+3)^2&\neq 1^2+2^2+3^2
+\end{align*}
+Instead, we add a correction term $\psi$ to make the equations hold true:
+
+\begin{align*}
+    (1+2)^2&=1^2+2^2+\psi_2\\
+    (1+2+3)^2&=1^2+2^2+3^2+\psi_3\\
+    &\ \ \vdots\\
+    (1+2+3+\cdots+n)^2&=1^2+2^2+3^2+\cdots+n^2+\psi_n
+\end{align*}
+Show that the correction term $\psi_n$ has the following form and determine the values of $\alpha$ and $\beta$:
+\[
+\psi_n=\frac{n^4-n^2}{\alpha}+\frac{n^3-n}{\beta}
+\]
+\end{custom-big}
+
+\begin{solution}[Series]
+\begin{align*}
+\left(\frac{n(n+1)}{2}\right)^2&=\frac{n(n+1)(2n+1)}{6}+\psi_n\\
+\psi_n&=n(n+1)\left(\frac{2n+1}{6}\right)-n(n+1)\left(\frac{n(n+1)}{4}\right)\\
+&=\left(n^2+n\right)\left(\frac{-3n^2+n+2}{12}\right)\\
+&=\frac{n^4-n^2}{-4}+\frac{n^3-n}{-6}\\
+\therefore (\alpha,\beta)&=(-4,-6)
+\end{align*}
+\end{solution}
+
+
+\begin{custom-big}[Problem B.3]
+You are given two overlaying squares with side length a. One of the squares is fixed at the
+bottom right corner and rotated by an angle of $\alpha$ (see drawing). Find an expression for the enclosed area $A(\alpha)$ between the two squares with respect to the rotation angle $\alpha$.
+\begin{center}
+    \includegraphics[width=6cm]{Diagrams/Problem B.3.png}
+\end{center}
+\end{custom-big}
+
+\begin{solution}[Trigonometry]\\
+Draw a line passing through the two non $90^\circ$ vertexes of the shaded area. The shaded area equals to twice the area of the triangles formed. 
+\begin{align*}
+    A(\alpha)&=\ a\left(a\tan\left(45^\circ-\frac{\alpha}{2}\right)\right)\\
+    &=\ a^2\tan\left(\frac{1}{2}\left(90^\circ-\alpha\right)\right)\\
+    &=\ a^2\left(\frac{1-\sin\alpha}{\cos\alpha}\right)
+\end{align*}
+\end{solution}
+
+\pagebreak
+\section{Part C}
+\subsection{Problem C.1}
+\begin{custom-big}[Problem C.1 (a)]
+Draw the function $\{x\}$ in a coordinate system for $0\leq x\leq 3$.
+\end{custom-big}
+
+\begin{solution}
+\begin{center}
+    \includegraphics[width=5cm]{Diagrams/2022-11-18_15.39n_1.jpg}
+\end{center}
+\end{solution}
+
+\begin{custom-big}[Problem C.2 (b)]
+Find the area $A_n$ under the graph of $\{x\}$ between $0$ and $n\in\mathbb N$ as given by:
+\[A_n=\int_0^n\{x\}dx\]
+\end{custom-big}
+
+\begin{solution}[Interval]\\
+$A_n$ is simply the sum of the area of the $n$ triangles:
+\[A_n=\frac n2\]
+\end{solution}
+
+\pagebreak
+\begin{custom-big}[Problem C.3 (c)]
+\[\gamma=\lim_{n\to\infty}\left(H_n-\log(n)\right)=0.5772\dots\]
+Use this to prove the following identity:
+\[\int_1^\infty\frac{\{x\}}{x^2}dx=1-\gamma\]
+\end{custom-big}
+
+\begin{solution}[Integrate by steps, Harmonic Sequence]
+\begin{align*}
+    \int_1^\infty\frac{\{x\}}{x^2}dx&=\lim_{n\to\infty}\sum_{k=1}^n\int_{k}^{k+1}\frac{x-k}{x^2}dx\\
+    &=\lim_{n\to\infty}\sum_{k=1}^n\left(\ln(k+1)-\ln k-\frac{1}{k+1}\right)\\
+    &=\lim_{n\to\infty}\left(\ln n-\sum_{k=2}^n\frac 1k\right)\\
+    &=\lim_{n\to\infty}\left(\ln n-H_n+1\right)\\
+    &=1-\gamma
+\end{align*}
+QED.
+\end{solution}
+
+\pagebreak
+\subsection{Problem C.2}
+\begin{custom-big}[Problem C.2 (a)]
+What is the difference between twin primes and Germain primes? Give examples for both.
+\end{custom-big}
+
+\begin{solution}
+\begin{itemize}
+    \item \textbf{Twin primes} are two prime numbers with difference of 2. For example, 3 and 5 is a pair of twin primes. 11 and 13 is also a pair of twin primes. 
+    \item A prime number $p$ is a \textbf{Germain prime} if $2p+1$ is also a prime. 
+\end{itemize}
+\end{solution}
+
+\begin{custom-big}[Problem C.2 (b)]
+Which numbers does the set $\mathcal{S}_{1,0}$ represent and what is the value of $\mathcal{S}'_{1,2}\left(4\cdot 10^{18}\right)$?
+\end{custom-big}
+
+\begin{solution}
+\begin{align*}
+    \mathcal S_{a,b}&=\{p:ap+b\text{ is prime}\}\\
+    \mathcal S_{1,0}&=\{p:p\text{ is prime}\}\\
+    \mathcal S_{1,0}&=\mathbb P
+\end{align*}
+$\mathcal S'_{1,2}\left(4\cdot 10^{18}\right)$ is essentially the sum of the reciprocals of all twin primes $<4\cdot 10^{18}$. Which is $ 1.840503 < B < 2.288513$, most probable value is about $1.90216$.
+\end{solution}
+
+\begin{custom-big}[Problem C.2]
+the proof of Theorem 1, explain why 
+\[
+\sum_{p\leq x,p\in\mathcal S_{a,b}}\frac 1p=\sum^x_{t=1}\frac{\pi_{a,b}(t)-\pi_{a,b}(t-1)}{t}
+\]
+\end{custom-big}
+
+\begin{solution}[Bijection]\\
+When $t$ is a prime and $at+b$ is also a prime, $\pi_{a,b}(t)-\pi_{a,b}(t-1)=1$, which equals to the numerator on the LHS.\\
+When $t$ is not a prime or $at+b$ is not a prime, $\pi_{a,b}(t)-\pi_{a,b}(t-1)=0$. The whole fraction becomes 0, equivalent of not added into the sum. \\
+The boundary of LHS and RHS are both $2\leq p\leq x$. This creates a bijection relationships between LHS and RHS and therefore equivalent. 
+\end{solution}
+
+\pagebreak
+\begin{custom-big}[Problem C.2]
+Explain the difference between Table 1 and Table 3.
+\end{custom-big}
+
+\begin{solution}[Definition]\\
+Table 1 contains the sum of the reciprocals $p\in\mathcal S_{a,b}, p\leq x_0$. For example, \begin{align*}
+\mathcal S_{2,1}(100)&=\frac{1}{2}+\frac{1}{3}+\frac{1}{5}+\frac{1}{11}+\frac{1}{23}+\frac{1}{29}+\frac{1}{41}+\frac{1}{53}+\frac{1}{83}+\frac{1}{89}= 1.268745760\\
+\mathcal S'_{1,2}&=\left(\frac{1}{3}+\frac{1}{5}\right)+\left(\frac{1}{5}+\frac{1}{7}\right)+\left(\frac{1}{11}+\frac{1}{13}\right)+\left(\frac{1}{17}+\frac{1}{19}\right)\\
+&+\left(\frac{1}{29}+\frac{1}{31}\right)+\left(\frac{1}{41}+\frac{1}{43}\right)+\left(\frac{1}{59}+\frac{1}{61}\right)+\left(\frac{1}{71}+\frac{1}{73}\right)=1.330990366
+\end{align*}
+Table 3 is the \textit{most probable values} of $\mathcal S_{a,b}$ as $x\to\infty$. Since we are not sure of the exact value, we are only able to give the lower and upper bound, and Table 3 contains the most probable values calculated by the formula given on the last paragraph of page 3.
+\end{solution}
+
+\begin{custom-big}[Problem C.2 (e)]
+Use Theorem 3 to calculate an upper bound for $\pi_{1,16}\left(e^{100}\right)$ in orders of magnitude.
+\end{custom-big}
+
+\begin{solution}
+\begin{align*}
+\pi_{1,16}(e^{100})&<\frac{16c_2e^{100}}{(\log e^{100})(D+\log e^{100})}\\
+&<\frac{16c_2(e^{100})}{100(D+100)}\\
+&<2.7756\times 10^{40}
+\end{align*}
+\end{solution}
+
+\begin{custom-big}[Probelm C.2 (f)]
+Show in detail why the left- and right-hand side of equation (1) in Theorem 4 are equal.
+\end{custom-big}
+
+\begin{solution}[Stieltjes Integration]\\
+With similar logic from part (c), we can break $\frac{\pi_{a,b}(N)}{N}-\frac{\pi_{a,b}(M)}{M}$ from the sigma. Now apply Stieltjes integration by parts:
+\[\int_a^b\alpha(x)g(x)dx=G(b)\alpha(b)-G(a)\alpha(a)-\int^b_aGd\alpha\]
+Combining together, we have the equation (1) in Theorem 4.
+\end{solution}
+\end{document}

@@ -1,0 +1,205 @@
+\documentclass{article}
+\usepackage{apacite}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{fiona}
+%\usepackage{elijah}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\setlength{\parindent}{0pt}
+\usepackage{hyperref}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage{pgfplots}
+\pgfplotsset{width=15cm,height=10cm,compat=1.9}
+
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+
+
+\pagestyle{empty}% for cropping
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{zref-savepos}
+\usepackage{tabu}
+
+\newcounter{NoTableEntry}
+\renewcommand*{\theNoTableEntry}{NTE-\the\value{NoTableEntry}}
+
+\newcommand*{\strike}[2]{%
+  \multicolumn{1}{#1}{%
+    \stepcounter{NoTableEntry}%
+    \vadjust pre{\zsavepos{\theNoTableEntry t}}% top
+    \vadjust{\zsavepos{\theNoTableEntry b}}% bottom
+    \zsavepos{\theNoTableEntry l}% left
+    \hspace{0pt plus 1filll}%
+    #2% content
+    \hspace{0pt plus 1filll}%
+    \zsavepos{\theNoTableEntry r}% right
+    \tikz[overlay]{%
+      \draw
+        let
+          \n{llx}={\zposx{\theNoTableEntry l}sp-\zposx{\theNoTableEntry r}sp-\tabcolsep},
+          \n{urx}={\tabcolsep},
+          \n{lly}={\zposy{\theNoTableEntry b}sp-\zposy{\theNoTableEntry r}sp},
+          \n{ury}={\zposy{\theNoTableEntry t}sp-\zposy{\theNoTableEntry r}sp}
+        in
+        (\n{llx}, \n{lly}) -- (\n{urx}, \n{ury})
+      ;
+    }% 
+  }%
+}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\tikzset{
+    right angle quadrant/.code={
+        \pgfmathsetmacro\quadranta{{1,1,-1,-1}[#1-1]}     % Arrays for selecting quadrant
+        \pgfmathsetmacro\quadrantb{{1,-1,-1,1}[#1-1]}},
+    right angle quadrant=1, % Make sure it is set, even if not called explicitly
+    right angle length/.code={\def\rightanglelength{#1}},   % Length of symbol
+    right angle length=2ex, % Make sure it is set...
+    right angle symbol/.style n args={3}{
+        insert path={
+            let \p0 = ($(#1)!(#3)!(#2)$) in     % Intersection**
+                let \p1 = ($(\p0)!\quadranta*\rightanglelength!(#3)$), % Point on base line
+                \p2 = ($(\p0)!\quadrantb*\rightanglelength!(#2)$) in % Point on perpendicular line
+                let \p3 = ($(\p1)+(\p2)-(\p0)$) in  % Corner point of symbol
+            (\p1) -- (\p3) -- (\p2)
+        }
+    }
+}
+\pagestyle{fancy}
+\fancyhf{}
+\title{Boyle's Law Handout}
+\author{Andi Jingzhi Tse, Janet Wan, Nancy Wang}
+\date{January 16, 2023}
+\lhead{Andi Jingzhi Tse, Janet Wan, Nancy Wang}
+\rhead{January 16, 2023}
+\pagestyle{fancy}
+
+ 
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+
+
+\begin{document}
+
+\maketitle
+\section{History}
+\begin{center}
+    \includegraphics[width=7cm]{Diagrams/Boyle.jpg}
+    \includegraphics[width=4cm]{Diagrams/J-Tube.png}
+\end{center}
+\textbf{Robert Boyle (1627-1691)}
+\begin{itemize}
+    \item Founder of Boyle's Law
+    \item Atomism believes that atoms are the base of all matter
+    \item Published “New Experiments Physico-Mechanical, Touching the Spring of the Air, and Its Effects”  (1660) leading to part two which is now known as the Boyle’s Law (1662)
+\end{itemize}
+\textbf{J- Tube Experiment}\\
+Add Mercury from point $T$ of the tube which is open, the mercury adds pressure to the tube compressing the air in the shorter leg with scale. By measuring and collecting data from multiple times adding  mercury to the tube. Boyle discovers the pattern of
+\[P_1V_1=P_2V_2\]
+
+
+\pagebreak
+\section{Pressure}
+\begin{formula}
+Pressure is calculated by the formula:
+\[P=\frac FA\]
+Where $P$ is the pressure, $F$ is the force, $A$ is the area of force applied. 
+\end{formula}
+The standard unit for pressure $P$ is Pa:
+\[\text{Pa}=\frac{\text N}{\text m^2}=\frac{\text{kg}}{\text{m}\cdot \text s^2}\]
+
+
+Another commonly used unit of pressure is atm, which is the pressure of atmosphere at sea level. Here is how to convert pressure units:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+     & Pa &bar&atm&Torr \\\hline
+    1 Pa &1&$10^{-5}$&$9.87\times 10^{-6}$&$7.5\times 10^{-3}$ \\\hline
+    1 bar&$10^5$&1&0.987&750.06\\\hline
+    1 mbar&$10^2$&$10^{-3}$&$0.967\times 10^{-3}$&0.75\\\hline
+    1 atm&$1.013\times 10^5$&1.013&1&760\\\hline
+    1 Torr&133.32&$1.33\times 10^{-3}$&$1.32\times 10^{-3}$&1\\\hline
+\end{tabular}
+\end{center}
+
+\section{Boyle's Law}
+\begin{formula}
+    Boyle's Law is given by the formula,
+    \[P_1V_1=P_2V_2\]
+    Where $P_1$ is the initial pressure, $V_1$ is the initial volume, $P_2$ is the final pressure, $V_2$ is the final volume.
+\end{formula}
+
+\begin{custom-big}[Example 1]
+Andi failed his math test, he throws a empty water bottle with pressure 1 atm to the ground and stamps on it. The volume is decreased to a third to its original. What is the pressure of the water bottle after Andi stamps on it?
+\end{custom-big}
+\begin{solution}
+\begin{align*}
+P_1V_1&=P_2V_2\\
+1\text{ atm }V_1&=P_2\left(\frac 13V_1\right)\\
+P_2&=3\text{ atm}
+\end{align*}
+\end{solution}
+
+\section{Application}
+\begin{center}
+    \includegraphics[width=15cm]{Diagrams/Chemistry Handout Respiratory System.png}\\
+    \includegraphics[width=7cm]{Diagrams/Chemistry handout tire example.png}
+\end{center}
+
+\section{Practices}
+\begin{custom-big}[Example 2]
+Lancy puts a balloon of 3.0 L in a sealed container, the initial pressure is 1.0 atm, and pumps the air out to 0.4 atm. Calculate the volume of the balloon. 
+\end{custom-big}
+\begin{solution}
+\begin{align*}
+P_1V_1&=P_2V_2\\
+    1.0\text{ atm}\cdot 3.0\text{ L } &=0.4\text{ atm }V_2\\
+    V_2&=7.5\text{ L}
+\end{align*}
+\end{solution}
+
+\begin{custom-big}[Example 3]
+A balloon has volume of 32.4 L, pressure of 1.00 atm, Janet presses the balloon with 500 kPa of pressure. What is the pressure and the volume of the balloon. \\
+(1 atm = 101325 Pa)
+\end{custom-big}
+\begin{solution}
+    
+\begin{align*}
+    P_2&=1\text{ atm}\cdot \frac{101325\text{ Pa}}{1\text{ atm}}+500000\text{ Pa}\\
+    P_2&=\boxed{601000\text{ Pa}}\\
+    P_1V_1&=P_2V_2\\
+    101325\text{ Pa}\cdot 32.4\text{ L}&=P_2\cdot V_2\\
+    V_2&=\frac{101325\text{ Pa}}{101325\text{ Pa}+500000\text{ Pa}}\cdot 32.4\text{ L}\\
+    V_2&=\boxed{5.46\text{ L}}
+\end{align*}
+\end{solution}
+
+\begin{custom-big}[Example 4]
+It is known that the density of air is 1.293 kg per cubic metre, and Andi is 65.0 kg. Andi stands on a 1.00L air cube with pressure 1.00 atm. What is the pressure, volume, and density of the air cube after Andi stands on it? \\
+(1 atm = 101325 Pa, g = 9.81 m/s$^2$)
+\end{custom-big}
+
+\begin{solution}
+
+\begin{align*}
+    P_{2}&=\frac{65\text{ kg }g \text{ m/s}^2}{0.01\text{ m}^2}+101325\text{ Pa}\\
+    P_2&=\boxed{165000\text{ Pa}}\\
+    P_1V_1&=P_2V_2\\
+    101325\text{ Pa}(1\text{ L})&=165090\text{ Pa}\cdot V_2\\
+    V_2&=\left(\frac{101325\text{ Pa}}{165090 \text{ Pa}}\right)1\text{ L}\\
+    V_2&=\boxed{0.614\text{ L}}\\
+    \rho_2&=\frac{1.293\text{ kg/m}^3\cdot \frac{1\text{ m}^3}{100\text{ L}}\cdot 1\text{ L}}{V_2\cdot \frac{1\text{ m}^3}{100\text{ L}}}\\
+    \rho_2&=\boxed{2.11\text{ kg/m}^3}
+\end{align*}
+\end{solution}
+
+\end{document}

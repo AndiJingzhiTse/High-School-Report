@@ -1,0 +1,226 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{elijah}[Last updated: July 31, 2021]
+
+%%fakesection Argument processing
+% Default Arguments
+% We include "Elijah" in all of these to make sure
+% that they don't collide with anything in external packages
+
+\newif\ifelijahauto\elijahautotrue %Automatic date and author, will be overridden in mathclub	
+\newif\ifelijahlongform\elijahlongformtrue %Just the basics, required for long-form essays or other writing works.
+\newif\ifelijahmath\elijahmathtrue %Importing all math-related things
+\newif\ifelijahpog\elijahpogfalse %nice looking colours in document
+\newif\ifelijahmycustom\elijahmycustomtrue %speedy commands, also good for note-taking
+\newif\ifelijahbetterfont\elijahbetterfonttrue %Reverts to CMU Sans Serif font in handouts
+
+\DeclareOption{mathclub}{\elijahpogtrue\elijahautofalse\elijahmycustomfalse}
+\DeclareOption{serif}{\elijahbetterfontfalse}
+\DeclareOption{notmath}{\elijahmathfalse}
+\DeclareOption{mathnote}{\elijahpogtrue}
+
+\ProcessOptions\relax
+
+%Various things that I think are always useful
+
+\PassOptionsToPackage{usenames,svgnames,dvipsnames,table}{xcolor}
+\RequirePackage{xcolor}
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+
+\RequirePackage{thmtools}
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage{float}
+\RequirePackage{authoraftertitle} %Honestly, this is just a short-term fix -- I honestly have no idea how to get \maketitle to work and also have \thetitle macros stored.
+
+	\lhead{\MyTitle}
+	\chead{\MyAuthor}
+	\rhead{\MyDate}
+
+
+	%Loading these in last because otherwise cleveref gets mad.
+	\RequirePackage[colorlinks=true]{hyperref}
+			\hypersetup{urlcolor=RubineRed,
+			linkcolor=RoyalBlue,
+			citecolor=ForestGreen}
+	\RequirePackage{cleveref}
+	
+	\newcommand{\latex}{\LaTeX}
+
+\ifelijahauto %stuff for auto
+	\author{Elijah Liu}
+	\date{\today}
+\fi	
+
+\ifelijahbetterfont
+	\usepackage[cm]{sfmath}
+	\renewcommand{\familydefault}{\sfdefault}	
+\fi
+
+\ifelijahlongform %stuff for my long-form docs
+	\usepackage[margin=1in]{geometry}
+	\setlength{\parindent}{0pt}
+	\linespread{1.3}
+	\pagestyle{fancy}
+	\cfoot{\thepage}
+\fi
+	
+\ifelijahmath %stuff for math
+	\usepackage{mathtools}
+	\usepackage{amsfonts}
+	\usepackage{amssymb}
+	\allowdisplaybreaks
+	
+	%Math-related shortcuts
+	\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+	\newcommand{\ceiling}[1]{\left\lceil #1 \right\rceil}
+	\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+	\newcommand{\dg}{^\circ}
+	\DeclareMathOperator*{\lcm}{lcm}
+	\newcommand{\diff}[1]{\mathrm{d}  #1}
+	\newcommand{\dd}[1]{\dfrac{\text{d}}{\text{d}#1}}
+	\newcommand{\ddd}[2]{\dfrac{\text{d}#1}{\text{d}#2}}
+	\newcommand{\ds}{\displaystyle}
+	\newcommand*\eval[3]{\left.#1\right\rvert_{#2}^{#3}}
+	\newcommand{\cycsum}{\sum_{\mathrm{cyc}}}
+	\newcommand{\symsum}{\sum_{\mathrm{sym}}}
+	\newcommand{\cycprod}{\prod_{\mathrm{cyc}}}
+	\newcommand{\symprod}{\prod_{\mathrm{sym}}}
+	\newcommand{\CC}{\mathbb C}
+	\newcommand{\NN}{\mathbb N}
+	\newcommand{\QQ}{\mathbb Q}
+	\newcommand{\QQpos}{\mathbb{Q^+}}
+	\newcommand{\RR}{\mathbb R}
+	\newcommand{\RRpos}{\mathbb{R^+}}
+	\newcommand{\ZZ}{\mathbb Z}
+	\newcommand{\ZZpos}{\mathbb{Z^+}}
+\fi
+
+\ifelijahpog %Nice colours! And boxes! Copied from Evan.
+	\usepackage[framemethod=TikZ]{mdframed}
+	\usepackage{tcolorbox}
+	\mdfdefinestyle{mdbluebox}{%
+			roundcorner = 10pt,
+			linewidth=1pt,
+			skipabove=12pt,
+			innerbottommargin=9pt,
+			skipbelow=2pt,
+			linecolor=blue,
+			nobreak=true,
+			backgroundcolor=TealBlue!5,
+		}
+		\declaretheoremstyle[
+			headfont=\bfseries\color{MidnightBlue},
+			mdframed={style=mdbluebox},
+			headpunct={\\[3pt]},
+			postheadspace={0pt}
+		]{thmbluebox}
+		
+		\declaretheoremstyle[
+			headfont=\bfseries\color{blue}
+		]{thmsimpleblue}
+
+		\mdfdefinestyle{mdredbox}{%
+			linewidth=0.5pt,
+			skipabove=12pt,
+			frametitleaboveskip=5pt,
+			frametitlebelowskip=0pt,
+			skipbelow=2pt,
+			frametitlefont=\bfseries,
+			innertopmargin=4pt,
+			innerbottommargin=8pt,
+			nobreak=true,
+			backgroundcolor=Salmon!5,
+			linecolor=RawSienna,
+		}
+		\declaretheoremstyle[
+			headfont=\bfseries\color{RawSienna},
+			mdframed={style=mdredbox},
+			headpunct={\\[3pt]},
+			postheadspace={0pt},
+		]{thmredbox}
+
+		\mdfdefinestyle{mdgreenbox}{%
+			skipabove=8pt,
+			linewidth=2pt,
+			rightline=false,
+			leftline=true,
+			topline=false,
+			bottomline=false,
+			linecolor=ForestGreen,
+			backgroundcolor=ForestGreen!5,
+		}
+		\declaretheoremstyle[
+			headfont=\bfseries\color{ForestGreen!70!black},
+			bodyfont=\normalfont,
+			spaceabove=2pt,
+			spacebelow=1pt,
+			mdframed={style=mdgreenbox},
+			headpunct={ --- },
+		]{thmgreenbox}
+
+		\mdfdefinestyle{mdblackbox}{%
+			skipabove=8pt,
+			linewidth=3pt,
+			rightline=false,
+			leftline=true,
+			topline=false,
+			bottomline=false,
+			linecolor=black,
+			backgroundcolor=RedViolet!5!gray!5,
+		}
+		\declaretheoremstyle[
+			headfont=\bfseries,
+			bodyfont=\normalfont\small,
+			spaceabove=0pt,
+			spacebelow=0pt,
+			mdframed={style=mdblackbox}
+		]{thmblackbox}
+	\theoremstyle{definition}
+	\declaretheorem[%
+				style=thmbluebox,name=Theorem,numberwithin=section]{theorem}
+	\declaretheorem[style=thmredbox,name=Example,sibling=theorem]{example}
+	\declaretheorem[style=thmredbox,name=Example,numbered=no]{example*}
+	\declaretheorem[style=thmbluebox,name=Lemma,sibling=theorem]{lemma}
+	\declaretheorem[style=thmbluebox,name=Technique,sibling=theorem]{technique}
+	\declaretheorem[style=thmbluebox,name=Proposition,sibling=theorem]{proposition}
+	\declaretheorem[style=thmbluebox,name=Corollary,sibling=theorem]{corollary}
+	\declaretheorem[style=thmbluebox,name=Theorem,numbered=no]{theorem*}
+	\declaretheorem[style=thmbluebox,name=Lemma,numbered=no]{lemma*}
+	\declaretheorem[style=thmbluebox,name=Proposition,numbered=no]{proposition*}
+	\declaretheorem[style=thmbluebox,name=Corollary,numbered=no]{corollary*}
+	\declaretheorem[style=thmsimpleblue,name=Solution,sibling=theorem]{solution}
+	\declaretheorem[style=thmsimpleblue,name=Solution,numbered=no]{solution*}
+	
+	\declaretheorem[style=thmblackbox,name=Remark,sibling=theorem]{remark}
+	\declaretheorem[style=thmblackbox,name=Remark,numbered=no]{remark*}
+		
+		\declaretheorem[name=Conjecture,sibling=theorem]{conjecture}
+		\declaretheorem[name=Conjecture,numbered=no]{conjecture*}
+		\declaretheorem[name=Definition,sibling=theorem]{definition}
+		\declaretheorem[name=Definition,numbered=no]{definition*}
+		\declaretheorem[name=Exercise,sibling=theorem]{exercise}
+		\declaretheorem[name=Exercise,numbered=no]{exercise*}
+		\declaretheorem[name=Fact,sibling=theorem]{fact}
+		\declaretheorem[name=Fact,numbered=no]{fact*}
+		\declaretheorem[name=Problem,sibling=theorem]{problem}
+		\declaretheorem[name=Problem,numbered=no]{problem*}
+		\declaretheorem[name=Question,sibling=theorem]{ques}
+		\declaretheorem[name=Question,numbered=no]{ques*}
+		
+
+		\Crefname{claim}{Claim}{Claims}
+		\Crefname{conjecture}{Conjecture}{Conjectures}
+		\Crefname{exercise}{Exercise}{Exercises}
+		\Crefname{fact}{Fact}{Facts}
+		\Crefname{problem}{Problem}{Problems}
+		\Crefname{ques}{Question}{Questions}
+\fi
+
+
+\ifelijahmycustom %Note-taking stuff.
+	\renewcommand{\labelitemi}{\textendash}
+	\renewcommand{\labelitemiii}{\textendash}
+	\renewcommand{\labelitemiv}{\textendash}
+	%Add custom commands for note-taking whenever you feel like it
+\fi
